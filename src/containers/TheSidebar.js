@@ -1,58 +1,84 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import {
+  CContainer,
   CCreateElement,
+  CImg,
+  CRow,
   CSidebar,
   CSidebarBrand,
   CSidebarNav,
   CSidebarNavDivider,
-  CSidebarNavTitle,
-  CSidebarMinimizer,
   CSidebarNavDropdown,
   CSidebarNavItem,
-} from '@coreui/react'
-
-import CIcon from '@coreui/icons-react'
-
+  CSidebarNavTitle,
+} from "@coreui/react";
+import React from "react";
+import { FaBriefcaseMedical, FaEdit } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+// Default user profile pic
+import defaultUser from "src/assets/images/default-user.jpg";
+import { validRoles } from "src/types/types";
+import adminNavigation from "./_nav.admins";
 // sidebar nav config
-import navigation from './_nav'
+import doctorNavigation from "./_nav.doctors";
 
 const TheSidebar = () => {
-  const dispatch = useDispatch()
-  const show = useSelector(state => state.sidebarShow)
+  const dispatch = useDispatch();
+  const show = useSelector((state) => state.nav.sidebarShow);
+  const { role, firstName, lastName, imageUrl } = useSelector((state) => state.auth);
+  let navigation = [];
+
+  if (role === validRoles.admin) {
+    navigation = [...adminNavigation];
+  } else {
+    navigation = [...doctorNavigation];
+  }
 
   return (
     <CSidebar
       show={show}
-      onShowChange={(val) => dispatch({type: 'set', sidebarShow: val })}
+      onShowChange={(val) => dispatch({ type: "set", sidebarShow: val })}
     >
       <CSidebarBrand className="d-md-down-none" to="/">
-        <CIcon
-          className="c-sidebar-brand-full"
-          name="logo-negative"
-          height={35}
-        />
-        <CIcon
-          className="c-sidebar-brand-minimized"
-          name="sygnet"
-          height={35}
-        />
+        <FaBriefcaseMedical size="30px" className="mr-3" />
+        <h4>Iot Saline</h4>
       </CSidebarBrand>
+      <CContainer>
+        <CRow>
+          <CImg
+            src={imageUrl ? imageUrl : defaultUser}
+            shape="rounded-circle"
+            fluid
+            width="100px"
+            align="center"
+            className="my-3 mx-2"
+          />
+        </CRow>
+        <CRow className="justify-content-center my-2">
+          <h5>
+            {firstName} {lastName}
+          </h5>
+        </CRow>
+        <CRow className="justify-content-center my-2">
+          <p>
+            <span>
+              Editar perfil <FaEdit className="ml-2" />
+            </span>
+          </p>
+        </CRow>
+      </CContainer>
       <CSidebarNav>
-
         <CCreateElement
           items={navigation}
           components={{
             CSidebarNavDivider,
             CSidebarNavDropdown,
             CSidebarNavItem,
-            CSidebarNavTitle
+            CSidebarNavTitle,
           }}
         />
       </CSidebarNav>
-      <CSidebarMinimizer className="c-d-md-down-none"/>
     </CSidebar>
-  )
-}
+  );
+};
 
-export default React.memo(TheSidebar)
+export default React.memo(TheSidebar);

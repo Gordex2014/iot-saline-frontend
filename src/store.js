@@ -1,17 +1,15 @@
-import { createStore } from 'redux'
+import { createStore, compose, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 
-const initialState = {
-  sidebarShow: 'responsive'
-}
+import { rootReducer } from "src/reducers/rootReducer";
 
-const changeState = (state = initialState, { type, ...rest }) => {
-  switch (type) {
-    case 'set':
-      return {...state, ...rest }
-    default:
-      return state
-  }
-}
+const composeEnhancers =
+  (typeof window !== "undefined" &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+  compose;
 
-const store = createStore(changeState)
-export default store
+const store = createStore(
+  rootReducer,
+  composeEnhancers(applyMiddleware(thunk))
+);
+export default store;
