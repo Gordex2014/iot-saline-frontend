@@ -27,6 +27,7 @@ const ViewAllDoctors = () => {
   const [formValues, handleInputChange, reset] = useForm({ query: "" });
   const { query } = formValues;
   useEffect(() => {
+    console.log("asdasdasd");
     fetchWithToken("users/doctors")
       .then((response) => response.json())
       .then((data) => setDoctors(data.body))
