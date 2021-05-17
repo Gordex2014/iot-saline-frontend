@@ -48,22 +48,16 @@ const TheSidebar = () => {
             src={imageUrl ? imageUrl : defaultUser}
             shape="rounded-circle"
             fluid
-            width="100px"
+            height="75px"
             align="center"
             className="my-3 mx-2"
           />
         </CRow>
         <CRow className="justify-content-center my-2">
-          <h5>
+          <h6>
             {firstName} {lastName}
-          </h5>
-        </CRow>
-        <CRow className="justify-content-center my-2">
-          <p>
-            <span>
-              Editar perfil <FaEdit className="ml-2" />
-            </span>
-          </p>
+          </h6>
+          <FaEdit className="ml-2" />
         </CRow>
       </CContainer>
       <CSidebarNav>
